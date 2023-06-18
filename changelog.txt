@@ -1,0 +1,22 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.0.3
+Date: 2023-05-26
+  Compatibilities:
+    - Teleport Shortcuts & Hotkeys
+
+---------------------------------------------------------------------------------------------------
+Version: 0.0.2
+Date: 2023-05-07
+  Changes:
+    - Supports tile blueprints/deconstruction planners
+
+
+---------------------------------------------------------------------------------------------------
+Version: 0.0.1
+Date: 2023-05-06
+  Changes:
+    - First version
+    - Instant blueprints
+    - Instant deconstruction planners
+    - Instant upgrade planners
+

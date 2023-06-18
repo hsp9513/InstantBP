@@ -2,6 +2,9 @@ local function on_built(event)
     local entity = event.created_entity or event.entity
     --local type = event.created_entity 
     if entity ~= nil and entity.name == "entity-ghost" or entity.name == "tile-ghost"  then
+        if event.stack.name == "teleport-destination-blueprint" then 
+            return 
+        end
         entity.revive()
     end
 end
