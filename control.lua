@@ -2,10 +2,10 @@ local function on_built(event)
     local entity = event.created_entity or event.entity
     --local type = event.created_entity 
     if entity ~= nil and entity.name == "entity-ghost" or entity.name == "tile-ghost"  then
-        if event.stack.name == "teleport-destination-blueprint" then 
+        if event.stack.valid_for_read and event.stack.name == "teleport-destination-blueprint" then 
             return 
         end
-        entity.revive()
+        entity.revive({raise_revive=true})
     end
 end
 
@@ -18,7 +18,7 @@ local function on_marked_for_deconstruction(event)
             local tiles={{position=entity.position,name=tile.hidden_tile}}
             surface.set_tiles(tiles)
         else
-            entity.destroy()
+            entity.destroy({raise_destroy=true})
             --entity.die()
         end
     end
@@ -35,6 +35,7 @@ local function on_marked_for_upgrade(event)
             force = entity.force,
             fast_replace = true,
             spill =  false,
+            raise_built = true,
         }
         local newEntity = surface.create_entity(entityInfo)
     end

@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.0.4
+Date: 2023-05-28
+  Scripting:
+    - raise_revive, raise_destroy, and raise_built events are emitted.
+  Compatibilities:
+    - dangOreus
+
+---------------------------------------------------------------------------------------------------
 Version: 0.0.3
 Date: 2023-05-26
   Compatibilities:
