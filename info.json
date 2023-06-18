@@ -1,0 +1,9 @@
+{
+    "name": "InstantBP",
+    "version": "0.0.1",
+    "title": "Instant Blueprint",
+    "author": "hsp9513",
+    "factorio_version": "1.1",
+    "dependencies": ["base >= 1.1"],
+	"description": "Blueprints, deconstruction planners and upgrade planners respond instantly. Since no costs are used for installation, it can be used as a cheat mod."
+}
