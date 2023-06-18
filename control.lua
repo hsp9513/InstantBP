@@ -2,7 +2,8 @@ local function on_built(event)
     local entity = event.created_entity or event.entity
     --local type = event.created_entity 
     if entity ~= nil and entity.name == "entity-ghost" or entity.name == "tile-ghost"  then
-        if event.stack.valid_for_read and event.stack.name == "teleport-destination-blueprint" then 
+        if event.stack and event.stack.valid_for_read and event.stack.name == "teleport-destination-blueprint" then 
+            -- script_raised_built event doesn't have stack.
             return 
         end
         entity.revive({raise_revive=true})
@@ -12,7 +13,7 @@ end
 local function on_marked_for_deconstruction(event)
     local entity=event.entity
     local surface=entity.surface
-    if(entity) then
+    if entity then
         if entity.name=="deconstructible-tile-proxy" then
             local tile=surface.get_tile(entity.position.x,entity.position.y)
             local tiles={{position=entity.position,name=tile.hidden_tile}}
@@ -25,7 +26,7 @@ local function on_marked_for_deconstruction(event)
 end
 
 local function on_marked_for_upgrade(event)
-    if(event.entity) then
+    if event.entity then
         local entity = event.entity
         local surface = entity.surface
         local entityInfo = {
@@ -85,8 +86,9 @@ end
 --script.on_event(defines.events.on_pre_player_mined_item,on_built_or_mined   )
 --script.on_event(defines.events.on_robot_pre_mined      ,on_built_or_mined   )
 
-script.on_event(defines.events.on_built_entity         ,on_built         )
-script.on_event(defines.events.script_raised_built     ,on_built   )
-script.on_event(defines.events.on_marked_for_deconstruction   ,on_marked_for_deconstruction   )
-script.on_event(defines.events.on_marked_for_upgrade   ,on_marked_for_upgrade   )
-script.on_event(defines.events.on_tick   ,on_tick   )
+script.on_event(defines.events.on_built_entity              , on_built                    ) -- {created_entity, player_index, stack, item tags, name, tick}
+script.on_event(defines.events.script_raised_built          , on_built                    ) -- {entity, name, tick}
+script.on_event(defines.events.on_marked_for_deconstruction , on_marked_for_deconstruction) -- {entity, player_index, name, tick}
+script.on_event(defines.events.on_marked_for_upgrade        , on_marked_for_upgrade       ) -- {entity, target, player_index, direction, name, tick}
+
+--script.on_event(defines.events.on_tick   ,on_tick   )
