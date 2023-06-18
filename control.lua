@@ -1,15 +1,23 @@
 local function on_built(event)
     local entity = event.created_entity or event.entity
     --local type = event.created_entity 
-    if entity ~= nil and entity.name == "entity-ghost"  then
+    if entity ~= nil and entity.name == "entity-ghost" or entity.name == "tile-ghost"  then
         entity.revive()
     end
 end
 
 local function on_marked_for_deconstruction(event)
-    if(event.entity) then
-        event.entity.destroy()
-        --event.entity.die()
+    local entity=event.entity
+    local surface=entity.surface
+    if(entity) then
+        if entity.name=="deconstructible-tile-proxy" then
+            local tile=surface.get_tile(entity.position.x,entity.position.y)
+            local tiles={{position=entity.position,name=tile.hidden_tile}}
+            surface.set_tiles(tiles)
+        else
+            entity.destroy()
+            --entity.die()
+        end
     end
 end
 
