@@ -15,9 +15,22 @@ local function on_built(event)
                 --game.print(helpers.table_to_json(entity.insert_plan))
                 insert_plan = entity.insert_plan
             end
+            entity.insert_plan = {}
             --game.print("plan end")
 
             local _,revived,proxy = entity.revive({raise_revive=true})
+            --아래의 방법은 레시피나 회로 설정등이 복사되지 않음
+            --local entityInfo = {
+            --    name = entity.ghost_name ,
+            --    position = entity.position,
+            --    direction = entity.direction,
+            --    force = entity.force,
+            --    raise_built = true,
+            --    quality = entity.quality
+            --}
+            --local surface = entity.surface
+            --entity.destroy()
+            --local revived = surface.create_entity(entityInfo)
 
             if revived and insert_plan then
                 for _,plan in pairs(insert_plan) do
