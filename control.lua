@@ -1,44 +1,89 @@
 local function on_built(event)
-    local entity = event.created_entity or event.entity
-    --local type = event.created_entity 
-    if entity ~= nil and entity.name == "entity-ghost" or entity.name == "tile-ghost"  then
-        if event.stack and event.stack.valid_for_read and event.stack.name == "teleport-destination-blueprint" then 
-            -- script_raised_built event doesn't have stack.
-            return 
+    local success,message = pcall(function ()
+        local entity = event.created_entity or event.entity
+        --local type = event.created_entity 
+        --game.print("on_bulilt")
+        if entity ~= nil and entity.name == "entity-ghost" or entity.name == "tile-ghost"  then
+            if event.stack and event.stack.valid_for_read and event.stack.name == "teleport-destination-blueprint" then 
+                -- script_raised_built event doesn't have stack.
+                return 
+            end
+            --game.print("valid")
+            local insert_plan
+            if entity.name=="entity-ghost" and entity.insert_plan then
+                --game.print("plan ")
+                --game.print(helpers.table_to_json(entity.insert_plan))
+                insert_plan = entity.insert_plan
+            end
+            --game.print("plan end")
+
+            local _,revived,proxy = entity.revive({raise_revive=true})
+
+            if revived and insert_plan then
+                for _,plan in pairs(insert_plan) do
+                    for _,item in pairs(plan.items.in_inventory) do
+                        --game.print(helpers.table_to_json(item))
+                        --game.print("inven:"..item.inventory.." stack:"..item.stack)
+                        revived.get_inventory(item.inventory)[item.stack+1].set_stack(plan.id)
+                    end
+                end
+            end
+
         end
-        entity.revive({raise_revive=true})
+    end)
+    if not success then
+        game.print("Instant BP error")
+        game.print(message)
     end
 end
 
 local function on_marked_for_deconstruction(event)
-    local entity=event.entity
-    local surface=entity.surface
-    if entity then
-        if entity.name=="deconstructible-tile-proxy" then
-            local tile=surface.get_tile(entity.position.x,entity.position.y)
-            local tiles={{position=entity.position,name=tile.hidden_tile}}
-            surface.set_tiles(tiles)
-        else
-            entity.destroy({raise_destroy=true})
-            --entity.die()
+    local success,message = pcall(function ()
+        local entity=event.entity
+        local surface=entity.surface
+        if entity then
+            if entity.name=="deconstructible-tile-proxy" then
+                local tile=surface.get_tile(entity.position.x,entity.position.y)
+                local tiles={{position=entity.position,name=tile.hidden_tile}}
+                surface.set_tiles(tiles)
+            else
+                entity.destroy({raise_destroy=true})
+                --entity.die()
+            end
         end
+    end)
+    if not success then
+        game.print("Instant BP error")
+        game.print(message)
     end
 end
 
 local function on_marked_for_upgrade(event)
-    if event.entity then
-        local entity = event.entity
-        local surface = entity.surface
-        local entityInfo = {
-            name = event.target.name ,
-            position = entity.position,
-            direction = entity.direction,
-            force = entity.force,
-            fast_replace = true,
-            spill =  false,
-            raise_built = true,
-        }
-        local newEntity = surface.create_entity(entityInfo)
+    local success,message = pcall(function ()
+        if event.entity and event.entity.valid then
+            local entity = event.entity
+            local surface = entity.surface
+            local entityInfo = {
+                name = event.target.name ,
+                position = entity.position,
+                direction = entity.direction,
+                force = entity.force,
+                fast_replace = true,
+                spill =  false,
+                raise_built = true,
+                quality = entity.quality
+            }
+            if entity.type=="underground-belt" then
+                entityInfo.type=entity.belt_to_ground_type
+            end
+            --game.print("pos"..helpers.table_to_json(entity.position).."dir"..(entity.direction)..entity.type.)
+            local newEntity = surface.create_entity(entityInfo)
+            
+        end
+    end)
+    if not success then
+        game.print("Instant BP error")
+        game.print(message)
     end
 end
 

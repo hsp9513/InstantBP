@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.0.6
+Date: 2024-11-17
+  Changes:
+    - Factorio 2.0 supports
+  Bugfixes:
+    - Fixed an issue where modules remained as ghosts instead of being inserted.
+    - Fixed an issue where output underground belts were not upgraded by the upgrade planner.
+
+---------------------------------------------------------------------------------------------------
 Version: 0.0.5
 Date: 2023-06-18
   Bugfixes:
