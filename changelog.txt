@@ -1,5 +1,5 @@
 ---------------------------------------------------------------------------------------------------
-Version: 0.0.6
+Version: 0.0.7
 Date: 2025-04-26
   Bugfixes:
     - Fixed an issue where inserted modules were additionally requested.
